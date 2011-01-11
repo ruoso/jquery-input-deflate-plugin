@@ -1,0 +1,36 @@
+This is a JQuery plugin that allows the creation of a different layer
+of inputs that will receive formatting according to user locale.
+
+Example:
+
+Let's imagine that you have your application handling a float value
+and you must support the pt_br locale (which uses "," as decimal
+separator and "." as separator for thousands).
+
+Usually, you would need to support the different float formats on the
+server, but with this plugin you can do that support entirely on
+client-side.
+
+It works by creating a second input, turning the original input into a
+hidden input and using deflate and inflate functions to convert
+to/from the desired user-friendly format. Changes are then propagated
+to the original input.
+
+ <input name="price" type="text" class="float" value="123.4">
+
+Will be turned into
+
+ <input name="price" type="hidden" value="123.4">
+ <input name="price_input_deflate" type="text" class="float" value="123,40">
+
+The code you need to call is something like:
+
+ $('.float').inputDeflate({ inflate: convert_to_locale_format,
+                            deflate: convert_to_server_format });
+
+Take a look at testePlugin.html for code samples.
+
+You can apply masks to the new field (think how that applies to a date
+field where the server needs an ISO8601 date and you want to present
+dd/mm/YYYY)
+

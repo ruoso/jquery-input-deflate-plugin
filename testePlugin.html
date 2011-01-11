@@ -1,0 +1,161 @@
+<html>
+ <head>
+ <title>JQuery Input Deflate Test Script</title>
+ </head>
+ <body>
+ <h1>JQuery Input Deflate Test Script</h1>
+ <form method="post" action="#" style="display: none">
+  <div id="divtest1">
+	<input type="text" value="123.4" id="test1" name="original" class="inflated" />
+  </div>
+  <div id="divtest2">
+	<input type="text" value="123.4" id="test2" name="original2" class="inflated" />
+  </div>
+  <div id="divtest3">
+	<input type="text" value="123.4" id="test3" name="original3" class="inflated" />
+  </div>
+  <div id="divtest4">
+	<input type="text" value="123.4" id="test4" name="original4" class="inflated" />
+  </div>
+  <div id="divtest5">
+	<input type="text" value="123.4" id="test5" name="original5" class="inflated" />
+  </div>
+ </form>
+ <script language="javascript" src="jquery-1.4.4.js"></script>
+ <script language="javascript" src="input.deflate.plugin.js"></script>
+ <script>
+	var test_inflate1 = function($num_machine) {
+		if ($num_machine == '123.4') { return "123,40" }
+		else { return "456,70" }
+	};
+	var test_deflate1 = function($num_locale) {
+		if ($num_locale == '123,40') { return "123.4" }
+		else { return "456.7" }
+	};
+
+	try {
+	   $('#test1').inputDeflate({ });
+	} catch(e) {
+	   document.write('ok 1 - fails without inflate and deflate<BR>');
+	}
+
+	try {
+	   $('#test1').inputDeflate({ inflate: test_inflate1 });
+	} catch(e) {
+	   document.write('ok 2 - fails without deflate<BR>');
+	}
+
+	try {
+	   $('#test1').inputDeflate({ deflate: test_deflate1 });
+	} catch(e) {
+	   document.write('ok 3 - fails without inflate<BR>');
+	}
+
+	try {
+		$('#test1').inputDeflate({ inflate: test_inflate1,
+								   deflate: test_deflate1 });
+	   document.write('ok 4 - does not die with correct args<BR>');
+	} catch(e) {
+	   document.write('not ok 4 - dies with correct args: '+e+'<BR>');
+	}
+
+	if ($('#test1').attr('type') == 'hidden') {
+		document.write('ok 5 - original input has hidden type<BR>');
+	} else {
+		document.write('not ok 5 - original input has hidden type<BR>');
+	}
+
+	if ($('#test1_input_deflate').length) {
+		document.write('ok 6 - new input created<BR>');
+	} else {
+		document.write('not ok 6 - new input created<BR>');
+	}
+
+	if ($('#test1_input_deflate').val() == "123,40") {
+		document.write('ok 7 - new input has converted value<BR>');
+	} else {
+		document.write('not ok 7 - new input has converted value<BR>');
+	}
+
+	try {
+		$('#test1_input_deflate').val("456,70");
+		$('#test1_input_deflate').change();
+	} finally {}
+
+	if ($('#test1').val() == "456.7") {
+		document.write('ok 8 - original input has converted value<BR>');
+	} else {
+		document.write('not ok 8 - original input has converted value<BR>');
+	}
+
+	if ($('#test1').parent().attr('id') == $('#test1_input_deflate').parent().attr('id')) {
+		document.write('ok 9 - new input is a sibling of the original<BR>');
+	} else {
+		document.write('not ok 9 - new input is a sibling of the original<BR>');
+	}
+	
+	try {
+		$('#test2').inputDeflate({ inflate: test_inflate1,
+								   deflate: test_deflate1,
+								   suffix: "_deflated" });
+	   document.write('ok 10 - does not die with correct args<BR>');
+	} catch(e) {
+	   document.write('not ok 10 - dies with correct args<BR>');
+	}
+
+	if ($('#test2_deflated').length) {
+		document.write('ok 11 - new input with new suffix<BR>');
+	} else {
+		document.write('not ok 11 - new input with new suffix<BR>');
+	}
+
+	try {
+		$('#test3').inputDeflate({ inflate: test_inflate1,
+								   deflate: test_deflate1,
+								   removeClass: "inflated" });
+	   document.write('ok 12 - does not die with correct args<BR>');
+	} catch(e) {
+	   document.write('not ok 12 - dies with correct args<BR>');
+	}
+
+	if (!$('#test3_input_deflate').hasClass('inflated')) {
+		document.write('ok 13 - removes the class<BR>');
+	} else {
+		document.write('not ok 13 - removes the class<BR>');
+	}
+	
+	try {
+		$('#test4').inputDeflate({ inflate: test_inflate1,
+								   deflate: test_deflate1,
+								   addClass: "deflated" });
+	   document.write('ok 14 - does not die with correct args<BR>');
+	} catch(e) {
+	   document.write('not ok 14 - dies with correct args<BR>');
+	}
+
+	if ($('#test4_input_deflate').hasClass('inflated') &&
+	    $('#test4_input_deflate').hasClass('deflated')) {
+		document.write('ok 15 - adds the class<BR>');
+	} else {
+		document.write('not ok 15 - adds the class<BR>');
+	}
+	
+	try {
+		$('#test5').inputDeflate({ inflate: test_inflate1,
+								   deflate: test_deflate1,
+								   removeClass: "inflated",
+								   addClass: "deflated" });
+	   document.write('ok 16 - does not die with correct args<BR>');
+	} catch(e) {
+	   document.write('not ok 16 - dies with correct args<BR>');
+	}
+
+	if (!$('#test5_input_deflate').hasClass('inflated') &&
+	    $('#test5_input_deflate').hasClass('deflated')) {
+		document.write('ok 17 - adds and removes classes<BR>');
+	} else {
+		document.write('not ok 17 - adds and removes classes<BR>');
+	}
+</script>
+</body>
+</html>
