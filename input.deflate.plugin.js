@@ -1,20 +1,20 @@
 /* 
  Copyright 2010 - Prefeitura Municipal de Fortaleza
 
- Este arquivo é parte do programa jquery-input-deflate-plugin
+ Este arquivo ï¿½ parte do programa jquery-input-deflate-plugin
 
- O Ação é um software livre; você pode redistribui-lo e/ou modifica-lo
- dentro dos termos da Licença Pública Geral GNU como publicada pela
- Fundação do Software Livre (FSF); na versão 2 da Licença.
+ O Aï¿½ï¿½o ï¿½ um software livre; vocï¿½ pode redistribui-lo e/ou modifica-lo
+ dentro dos termos da Licenï¿½a Pï¿½blica Geral GNU como publicada pela
+ Fundaï¿½ï¿½o do Software Livre (FSF); na versï¿½o 2 da Licenï¿½a.
 
- Este programa é distribuido na esperança que possa ser util, mas SEM
- NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAÇÂO a qualquer
- MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a Licença Pública Geral GNU
+ Este programa ï¿½ distribuido na esperanï¿½a que possa ser util, mas SEM
+ NENHUMA GARANTIA; sem uma garantia implicita de ADEQUAï¿½ï¿½O a qualquer
+ MERCADO ou APLICAï¿½ï¿½O EM PARTICULAR. Veja a Licenï¿½a Pï¿½blica Geral GNU
  para maiores detalhes.
 
- Você deve ter recebido uma cópia da Licença Pública Geral GNU, sob o
- título "LICENCA.txt", junto com este programa, se não, escreva para a
- Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor,
+ Vocï¿½ deve ter recebido uma cï¿½pia da Licenï¿½a Pï¿½blica Geral GNU, sob o
+ tï¿½tulo "LICENCA.txt", junto com este programa, se nï¿½o, escreva para a
+ Fundaï¿½ï¿½o do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor,
  */
 (function($){
 	$.fn.inputDeflate = function (options) {
@@ -27,24 +27,24 @@
 			throw("Inflate and deflate functions are mandatory");
 		return this.each(function() {
 			// elemento selecionado...
-			$this = $(this);
-
+			var este = $(this);
 			// primeiro precisamos criar um clone do elemento
-			clone2 = $this.clone();
+			var clone2 = este.clone();
 			
 			// entao sobrescrevemos o id e o name com o sufixo
 			if (clone2.attr('id'))
-				clone2.attr('id', $this.attr('id') + suffix);
+				clone2.attr('id', este.attr('id') + suffix);
 			if (clone2.attr('name'))
-				clone2.attr('name', $this.attr('id') + suffix);
+				clone2.attr('name', este.attr('id') + suffix);
 
 			// geramos o valor do input novo com o resultado do inflate
-			var value = $this.val();
+			var value = este.val();
 			clone2.val(inflate(value));
 			
 			// associamos o onChange do segundo para atualizar o primeiro
 			clone2.change(function(){
-				$this.val(deflate(clone2.val()));
+                            var element = este;
+                            element.val(deflate(clone2.val()));
 			});
 
 			if (addClass)
@@ -53,14 +53,14 @@
 				clone2.removeClass(removeClass);
 				
 			// agora adicionamos o segundo elemento
-			$this.after(clone2);
+			este.after(clone2);
 
 			// e entao substituimos o original pelo seu clone de outro tipo
-			// precisamos fazer assim porque o IE não aceita sobrescrever o type,
-			// mesmo quando não está associado à DOM
-			$this.replaceWith('<input type="hidden" name="'+$this.attr('name')+'" id="'+$this.attr('id')+'">');
-			$this = $('#' + $this.attr('id'));
-			$this.val(value);
+			// precisamos fazer assim porque o IE nï¿½o aceita sobrescrever o type,
+			// mesmo quando nï¿½o estï¿½ associado ï¿½ DOM
+			este.replaceWith('<input type="hidden" name="'+este.attr('name')+'" id="'+este.attr('id')+'">');
+			este = $('#' + este.attr('id'));
+			este.val(value);
 			
 		});
 	};
